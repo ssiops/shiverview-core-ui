@@ -1,0 +1,27 @@
+.view-animate-container {
+  position: relative;
+}
+.view-animate {
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  &.ng-enter {
+    opacity: 0;
+    -webkit-transition: opacity @ease-in 0.5s;
+    transition: opacity @ease-in 0.5s;
+    &.ng-enter-active {
+      opacity: 1;
+    }
+  }
+  &.ng-leave{
+    -webkit-transition: opacity @ease-out 0.5s;
+    transition: opacity @ease-out 0.5s;
+    &.ng-leave-active {
+      opacity: 0;
+    }
+  }
+}

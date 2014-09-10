@@ -1,0 +1,14 @@
+{
+  "name": "shiverview-core-ui",
+  "desc": "Basic ui framework for project Shiverview",
+  "path": "/",
+  "static": "dist",
+  "ui": {
+    "icon": "favicon.png"
+  },
+  "privileges": {
+    "database": "shiverview",
+    "manager": true
+  },
+  "dependencies": {}
+}
