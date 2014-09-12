@@ -1,5 +1,7 @@
 var async = require('async');
-var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
+
+var Cache = require('./lib/cache.js');
 
 var repoPatt = /^[A-Za-z]+\/.+$/;
 
@@ -18,31 +20,31 @@ var app = new App();
 
 App.prototype.init = function (srv, callback) {
   var self = this;
-  srv.manager.server.on('ready', function () {
-    if (process.env.verbose) console.log('Init bower for all applications.');
-    var bowerDep = [];
-    for (var app in srv.manager.apps) {
-      if (srv.manager.apps[app].bower && srv.manager.apps[app].bower.dependencies) {
-        for (var dep in srv.manager.apps[app].bower.denpendencies) {
-          if (bowerDep.indexOf(dep) >= 0)
-            continue;
-          if (repoPatt.test(srv.manager.apps[app].bower.dependencies[dep]))
-            bowerDep.push(srv.manager.apps[app].bower.dependencies[dep]);
-          else
-            bowerDep.push(dep + '#' + srv.manager.apps[app].bower.dependencies[dep]);
-        }
-      }
+  self.srv = srv;
+  var bowerDep = [];
+  if (process.env.verbose) console.log('Installing bower dependencies.');
+  for (var dep in self.bower.dependencies) {
+    if (repoPatt.test(self.bower.dependencies[dep]))
+      bowerDep.push(self.bower.dependencies[dep]);
+    else
+      bowerDep.push(dep + '#' + self.bower.dependencies[dep]);
+  }
+  var bower = exec(['bower', 'install', '--quiet', '--allow-root'].concat(bowerDep).join(' '));
+  bower.on('close', function (code) {
+    if (code !== 0) {
+      var e = new Error('Failed to install bower dependencies.');
+      e.data = bowerDep;
+      return callback(e);
     }
-    var bower = spawn('bower', ['install'].concat(bowerDep));
-    bower.on('close', function (code) {
-      if (code !== 0) {
-        var e = new Error('Failed to install bower dependencies.');
-        e.data = bowerDep;
-        return callback(e);
-      }
-      if (process.env.verbose && bowerDep.length > 0) console.log('Bower packages installed:\n' + bowerDep.join(' '));
-    });
+    if (process.env.verbose && bowerDep.length > 0) console.log('Bower packages installed:\n' + bowerDep.join(' '));
+    return callback();
   });
+};
+
+App.prototype.finally = function (callback) {
+  var self = this;
+  self.srv.cache = new Cache();
+  self.srv.cache.init(self.srv.manager.apps);
   return callback();
 };
 

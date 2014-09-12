@@ -1,18 +1,14 @@
-var Cache = require('./lib/cache.js');
-var cache = new Cache();
-
 module.exports = [
   {
     url: '/routes',
     method: 'get',
     handler: function (req, res, srv) {
-      if (typeof srv.manager.apps['shiverview-core-users'] === 'undefined') {
-        res.send([{
-          path: '/start',
-          view: '/views/start.html',
-          ctrl: 'startCtrl',
-          scope: 'everyone'
-        }]);
+      if (typeof srv.manager.apps['shiverview-core-users'] === 'undefined' || typeof req.session.user === 'undefined') {
+        res.send(srv.cache.get());
+      } else if (req.session.user.admin) {
+        res.send(srv.cache.get('admin'));
+      } else {
+        res.send(srv.cache.get('users'));
       }
     }
   }
