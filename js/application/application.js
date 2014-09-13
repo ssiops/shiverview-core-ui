@@ -1,5 +1,5 @@
 (function (angular) {
-var sv = document.sv = angular.module('shiverview', ['ui.bootstrap', 'ngProgress', 'ngAnimate', 'ngRoute', 'ngTouch']);
+var sv = document.sv = angular.module('shiverview', /*<!-- Ng Mod Inject*/['ui.bootstrap', 'ngProgress', 'ngAnimate', 'ngRoute', 'ngTouch']/*--!>*/);
 sv.config(['$routeProvider', function ($routeProvider) {
   $routeProvider.when('/', {
     templateUrl: '/views/index.html',
@@ -8,6 +8,7 @@ sv.config(['$routeProvider', function ($routeProvider) {
   .when('/404', {
     templateUrl: '/views/404.html'
   })
+  /*<!-- Ng Route Inject --!>*/
   .otherwise({
     templateUrl: '/views/404.html'
   });
