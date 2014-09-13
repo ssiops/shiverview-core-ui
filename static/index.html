@@ -36,19 +36,22 @@
         </div>
         <div class="collapse navbar-collapse" collapse="collapsed">
           <ul class="nav navbar-nav">
-            <li ng-repeat="item in navList" class="{{item.active?'active':' '}}{{item.views.length > 1?'dropdown':''}}">
-              <a ng-if="item.views.length == 1" ng-href="'#/'+item.name+'/'+item.views[0].path">{{item.views[0].title}}</a>
+            <li ng-repeat="item in navList" class="{{item.active?'active':' '}}{{!item.href && item.views.length > 1?'dropdown':''}}">
+              <a ng-if="item.href" ng-href="{{item.href}}">{{item.name}}</a>
+              <a ng-if="item.views.length === 1" ng-href="{{'#'+item.views[0]}}">{{item.name}}</a>
               <a ng-if="item.views.length > 1" href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.name}} <span class="caret"></span></a>
               <ul ng-if="item.views.length > 1" class="dropdown-menu" role="menu">
-                <li ng-repeat="view in item.views"><a ng-href="'#/'+item.name+'/'+view.path">{{view.title}}</a></li>
+                <li ng-repeat="view in item.views"><a ng-href="{{'#'+view.path}}">{{view.title}}</a></li>
               </ul>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li ng-repeat="item in navListRight" class="{{item.active?'active':' '}}{{item.views.length > 1?'dropdown':''}}">
-              <a ng-if="item.views.length == 1" ng-href="'#/'+item.name+'/'+item.views[0].path">{{item.views[0].title}}</a>
+            <li ng-repeat="item in navListRight" class="{{item.active?'active':' '}}{{!item.href && item.views.length > 1?'dropdown':''}}">
+              <a ng-if="item.href" ng-href="{{item.href}}">{{item.name}}</a>
+              <a ng-if="item.views.length === 1" ng-href="{{'#'+item.views[0]}}">{{item.name}}</a>
+              <a ng-if="item.views.length > 1" href="#" class="dropdown-toggle" data-toggle="dropdown">{{item.name}} <span class="caret"></span></a>
               <ul ng-if="item.views.length > 1" class="dropdown-menu" role="menu">
-                <li ng-repeat="view in item.views"><a ng-href="'#/'+item.name+'/'+view.path">{{view.title}}</a></li>
+                <li ng-repeat="view in item.views"><a ng-href="{{'#'+view.path}}">{{view.title}}</a></li>
               </ul>
             </li>
           </ul>

@@ -30,19 +30,9 @@ angular.module('shiverview')
       url: '/routes',
       method: 'get'
     }).success(function (data) {
-      if (typeof data === 'object') {
-        var l = [];
-        for (var app in data) {
-          var v = [];
-          for (var path in data[app]) {
-            v.push({path: path, title: data[app][path].title});
-          }
-          data[app].name = app;
-          data[app].views = v;
-          l.push(data[app]);
-        }
-        l.sort(function (a, b) {return a.index - b.index});
-        $scope.navList = l;
+      if (data instanceof Array) {
+        data.sort(function (a, b) {return a.index - b.index});
+        $scope.navList = data;
       }
     })
   };
