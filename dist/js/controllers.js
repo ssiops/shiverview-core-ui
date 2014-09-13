@@ -28,19 +28,22 @@ angular.module('shiverview')
 
 }])
 .controller('navCtrl', ['$scope', '$http', '$route', function ($scope, $http, $route) {
+  $scope.$route = $route;
   $scope.collapsed = true;
   $scope.toggleCollapse = function () {
     $scope.collapsed = !$scope.collapsed;
   };
-  $scope.navList = [
-    {
-      title: 'Start',
-      path: '#/start'
-    },
-    {
-      title: 'End',
-      path: '#/end'
-    }
-  ];
+  $scope.updateNav = function () {
+    $http({
+      url: '/routes',
+      method: 'get'
+    }).success(function (data) {
+      if (data instanceof Array) {
+        data.sort(function (a, b) {return a.index - b.index});
+        $scope.navList = data;
+      }
+    })
+  };
+  $scope.updateNav();
 }])
 })(window.angular);
