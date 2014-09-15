@@ -20,6 +20,16 @@ angular.module('shiverview')
   $scope.$on('$routeChangeError', function (e) {
     ngProgress.reset();
   });
+  $scope.$on('setProgress', function (arg) {
+    if (arg === 0)
+      ngProgress.start();
+    else if (arg >= 100)
+      ngProgress.complete();
+    else if (arg < 0)
+      ngProgress.reset();
+    else
+      ngProgress.set(arg);
+  });
 }])
 .controller('headCtrl', ['$scope', '$http', function ($scope, $http) {
   $scope.css = [];
@@ -27,8 +37,8 @@ angular.module('shiverview')
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
 
 }])
-.controller('navCtrl', ['$scope', '$http', '$route', function ($scope, $http, $route) {
-  $scope.$route = $route;
+.controller('navCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  $scope.$loc = $location;
   $scope.collapsed = true;
   $scope.toggleCollapse = function () {
     $scope.collapsed = !$scope.collapsed;
@@ -39,11 +49,24 @@ angular.module('shiverview')
       method: 'get'
     }).success(function (data) {
       if (data instanceof Array) {
+        var left = [];
+        var right = [];
         data.sort(function (a, b) {return a.index - b.index});
-        $scope.navList = data;
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].position === 'right')
+            right.unshift(data[i]);
+          else
+            left.push(data[i]);
+        }
+        $scope.navList = left;
+        $scope.navListRight = right;
       }
-    })
+    });
+  };
+  $scope.checkActive = function (input) {
+    return $location.path().search(input) === 0;
   };
   $scope.updateNav();
+  $scope.$on('userStatusUpdate', $scope.updateNav);
 }])
 })(window.angular);
