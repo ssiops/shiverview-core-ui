@@ -20,7 +20,7 @@ angular.module('shiverview')
   $scope.$on('$routeChangeError', function (e) {
     ngProgress.reset();
   });
-  $scope.$on('setProgress', function (arg) {
+  $scope.$on('setProgress', function (e, arg) {
     if (arg === 0)
       ngProgress.start();
     else if (arg >= 100)

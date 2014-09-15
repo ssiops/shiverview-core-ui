@@ -20,6 +20,7 @@ module.exports = function(grunt) {
 
     jshint: {
       options: {
+        verbose: true,
         jshintrc: './.jshintrc'
       },
       gruntfile: {
