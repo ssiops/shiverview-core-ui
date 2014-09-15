@@ -1,0 +1,15 @@
+#message-toast {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1001;
+  & > .alert {
+    display: inline-block;
+    & > .toast-dismiss
+    {
+      font-weight: bold;
+    }
+  }
+}

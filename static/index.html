@@ -23,6 +23,9 @@
   </head>
   <body ng-controller="bodyCtrl">
     <div class="ngProgress" ng-controller="progressCtrl"></div>
+    <div id="message-toast" ng-controller="toastCtrl">
+      <div class="alert" ng-show="show" ng-class="style">{{message}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>
+    </div>
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation" ng-controller="navCtrl">
       <div class="container">
         <div class="navbar-header">

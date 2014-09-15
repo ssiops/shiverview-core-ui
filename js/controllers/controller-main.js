@@ -61,4 +61,27 @@ angular.module('shiverview')
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
 }])
+.controller('toastCtrl', ['$scope', function ($scope) {
+  $scope.show = false;
+  $scope.display = function (style, msg) {
+    $scope.style = style;
+    $scope.message = msg;
+    $scope.show = true;
+  };
+  $scope.dismiss = function () {
+    $scope.show = false;
+  };
+  $scope.$on('errorMessage', function (e, msg) {
+    $scope.display('alert-danger', msg);
+  });
+  $scope.$on('warningMessage', function (e, msg) {
+    $scope.display('alert-warning', msg);
+  });
+  $scope.$on('infoMessage', function (e, msg) {
+    $scope.display('alert-info', msg);
+  });
+  $scope.$on('successMessage', function (e, msg) {
+    $scope.display('alert-success', msg);
+  });
+}])
 })(window.angular);
