@@ -1,0 +1,18 @@
+.file-drop-zone {
+  margin: @space-large;
+  padding: @space-xlarge;
+  border: 4px dashed darken(@body-bg, 25%);
+  background-color: darken(@body-bg, 10%);
+  text-align: center;
+  &.active {
+    border-color: lighten(@brand-primary, 25%);
+    background-color: darken(@body-bg, 5%);
+  }
+  & > h3 {
+    color: lighten(@text-color, 15%);
+  }
+  & > p {
+    color: lighten(@text-color, 25%);
+    font-weight: bold; 
+  }
+}
