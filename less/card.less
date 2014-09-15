@@ -1,0 +1,20 @@
+.card {
+  display: block;
+  position: relative;
+  margin-bottom: @space-default;
+  background-color: @card-bg;
+  border: 1px solid @card-border-color;
+  -webkit-box-shadow: @card-shadow;
+  -moz-box-shadow: @card-shadow;
+  box-shadow: @card-shadow;
+  & > img.cover {
+    width: 100%;
+    margin-bottom: @space-small;
+  }
+}
+.card-content {
+  padding: @space-default;
+  &.compact {
+    padding: @space-small;
+  }
+}

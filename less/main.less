@@ -2,9 +2,10 @@
 @import "layout.less";
 @import "animation.less";
 @import "ngprogress.less";
+@import "card.less";
 
 body {
-  padding-top: 50px;
+  padding-top: 51px;
 }
 
 .splash-img {
@@ -14,6 +15,13 @@ body {
 
 .label {
   border-radius: 0;
+}
+
+.nav.navbar-nav > li.active {
+  border-bottom: 5px solid darken(@brand-primary, 5%);
+  & > a {
+    padding-bottom: 10px;
+  }
 }
 
 // Bootstrap
