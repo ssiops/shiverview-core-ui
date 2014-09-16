@@ -1,4 +1,5 @@
 var async = require('async');
+var cluster = require('cluster');
 var exec = require('child_process').exec;
 var fs = require('fs');
 var q = require('q');
@@ -33,6 +34,8 @@ App.prototype.finally = function (callback) {
   var self = this;
   self.srv.cache = new Cache();
   self.srv.cache.init(self.srv.manager.apps);
+  if (cluster.isWorker)
+    return callback();
   self.installBowerDep()
   .then(function () {
     self.injectDep();
@@ -176,7 +179,7 @@ App.prototype.minify = function () {
   if (process.env.verbose) console.log('Building list of application scripts.');
   for (var app in self.srv.manager.apps) {
     if (self.srv.manager.apps[app].ui && self.srv.manager.apps[app].ui.scripts) {
-      var basepath = process.cwd() + '/node_modules/' + self.srv.manager.apps[app].name + '/' + self.srv.manager.apps[app].static + '/';
+      var basepath = process.cwd() + '/static' + self.srv.manager.apps[app].path + '/';
       if (typeof self.srv.manager.apps[app].ui.scripts === 'string')
         files.push(basepath + self.srv.manager.apps[app].ui.scripts);
       else if (self.srv.manager.apps[app].ui.scripts instanceof Array)
@@ -186,10 +189,11 @@ App.prototype.minify = function () {
     }
   }
   if (process.env.verbose) console.log('Minifying application scripts.');
-  var appMin = uglify.minify([process.cwd() + '/static/js/application.js'], {
-    warnings: true,
+  var appMin = uglify.minify(['./static/js/application.js'], {
     outSourceMap: 'application.min.js.map'
   });
+  var patt = /"sources".+"names"/;
+  var appReplace = '"sources":["application.js"],"names"';
   var toWrite = [
     {
       path: process.cwd() + '/static/js/application.min.js',
@@ -197,21 +201,24 @@ App.prototype.minify = function () {
     },
     {
       path: process.cwd() + '/static/js/application.min.js.map',
-      content: appMin.map
+      content: appMin.map.replace(patt, appReplace)
     }
   ];
   if (files.length > 0) {
     var ctrlMin = uglify.minify([process.cwd() + '/static/js/controllers.js'].concat(files), {
-      warnings: true,
       outSourceMap: 'controllers.min.js.map'
     });
+    var ctrlReplace = [];
+    for (var l = 0; l < files.length; l++)
+      ctrlReplace.push(files[l].replace(/^.*\/static/, ''));
+    ctrlReplace = '"sources":["' + ctrlReplace.join('", "') + '"],"names"';
     toWrite.push({
       path: process.cwd() + '/static/js/controllers.min.js',
       content: ctrlMin.code
     });
     toWrite.push({
       path: process.cwd() + '/static/js/controllers.min.js.map',
-      content: ctrlMin.map
+      content: ctrlMin.map.replace(patt, ctrlReplace)
     });
   }
   if (process.env.verbose) console.log('Saving minified application scripts.');
