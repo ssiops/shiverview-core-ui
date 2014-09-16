@@ -1,8 +1,12 @@
 (function (angular) {
 angular.module('shiverview')
-.controller('indexCtrl', ['$scope', function ($scope) {
+.controller('indexCtrl', ['$scope', '$rootScope', function ($scope, $rootScope) {
+  $scope.$rs = $rootScope;
   $scope.message = 'Hello World!';
   $scope.date = new Date().toString();
+  $scope.broadcast = function (event, msg) {
+    $rootScope.$broadcast(event, msg);
+  };
 }]);
 })(window.angular);
 
@@ -68,5 +72,28 @@ angular.module('shiverview')
   };
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
+}])
+.controller('toastCtrl', ['$scope', function ($scope) {
+  $scope.show = false;
+  $scope.display = function (style, msg) {
+    $scope.style = style;
+    $scope.message = msg;
+    $scope.show = true;
+  };
+  $scope.dismiss = function () {
+    $scope.show = false;
+  };
+  $scope.$on('errorMessage', function (e, msg) {
+    $scope.display('alert-danger', msg);
+  });
+  $scope.$on('warningMessage', function (e, msg) {
+    $scope.display('alert-warning', msg);
+  });
+  $scope.$on('infoMessage', function (e, msg) {
+    $scope.display('alert-info', msg);
+  });
+  $scope.$on('successMessage', function (e, msg) {
+    $scope.display('alert-success', msg);
+  });
 }])
 })(window.angular);
