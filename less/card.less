@@ -11,6 +11,41 @@
     width: 100%;
     margin-bottom: @space-small;
   }
+  & > h1.cover,
+  & > h2.cover,
+  & > h3.cover,
+  & > h4.cover,
+  & > h5.cover,
+  & > h6.cover {
+    width: 100%;
+    margin: 0;
+    padding: 0.5em 1em;
+    background-color: darken(@card-bg, 5%);
+    border-bottom: 1px solid @card-border-color;
+    -webkit-box-shadow: @card-shadow;
+    -moz-box-shadow: @card-shadow;
+    box-shadow: @card-shadow;
+    &.cover-primary {
+      color: #fff;
+      background-color: darken(@brand-primary, 5%);
+    }
+    &.cover-success {
+      color: #fff;
+      background-color: darken(@brand-success, 5%);
+    }
+    &.cover-info {
+      color: #fff;
+      background-color: darken(@brand-info, 5%);
+    }
+    &.cover-warning {
+      color: #fff;
+      background-color: darken(@brand-warning, 5%);
+    }
+    &.cover-danger {
+      color: #fff;
+      background-color: darken(@brand-danger, 5%);
+    }
+  }
 }
 .card-content {
   padding: @space-default;
