@@ -29,7 +29,7 @@ angular.module('shiverview')
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
 
 }])
-.controller('navCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+.controller('navCtrl', ['$scope', '$http', '$location', '$swipe', function ($scope, $http, $location, $swipe) {
   $scope.$loc = $location;
   $scope.collapsed = true;
   $scope.toggleCollapse = function () {
@@ -57,6 +57,32 @@ angular.module('shiverview')
   };
   $scope.checkActive = function (input) {
     return $location.path().search(input) === 0;
+  };
+  $scope.drawerAnimated = true;
+  $scope.drawer = document.getElementById('drawer');
+  var startCoords = {};
+  $swipe.bind(angular.element($scope.drawer), {
+    start: function (coords, e) {
+      startCoords = coords;
+      $scope.$apply('drawerAnimated=false');
+    },
+    move: function (coords, e) {
+      if (coords.x < startCoords.x)
+        $scope.drawer.style.left = '-' + (startCoords.x - coords.x) + 'px';
+    },
+    end: function (coords, e) {
+      $scope.$apply('drawerAnimated=true');
+      if (startCoords.x - coords.x > 80)
+        $scope.$apply('drawerActive=false');
+      setTimeout(function () {
+        $scope.drawer.removeAttribute('style');
+      }, 200);
+    }
+  });
+  $scope.toggleDrawer = function () {
+    $scope.drawer.removeAttribute('style');
+    $scope.drawerQuick = false;
+    $scope.drawerActive = !$scope.drawerActive;
   };
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
