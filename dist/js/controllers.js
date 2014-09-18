@@ -39,9 +39,9 @@ angular.module('shiverview')
   $scope.css = [];
 }])
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
-
+  $scope.initDone = true;
 }])
-.controller('navCtrl', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+.controller('navCtrl', ['$scope', '$http', '$location', '$swipe', function ($scope, $http, $location, $swipe) {
   $scope.$loc = $location;
   $scope.collapsed = true;
   $scope.toggleCollapse = function () {
@@ -53,22 +53,41 @@ angular.module('shiverview')
       method: 'get'
     }).success(function (data) {
       if (data instanceof Array) {
-        var left = [];
-        var right = [];
         data.sort(function (a, b) {return a.index - b.index});
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].position === 'right')
-            right.unshift(data[i]);
-          else
-            left.push(data[i]);
-        }
-        $scope.navList = left;
-        $scope.navListRight = right;
+        $scope.navList = data;
       }
     });
   };
   $scope.checkActive = function (input) {
     return $location.path().search(input) === 0;
+  };
+  $scope.drawerAnimated = true;
+  $scope.drawer = document.getElementById('drawer');
+  var startCoords = {};
+  $swipe.bind(angular.element($scope.drawer), {
+    start: function (coords, e) {
+      startCoords = coords;
+    },
+    move: function (coords, e) {
+      var delta = startCoords.x - coords.x;
+      if (delta > 10)
+        $scope.$apply('drawerAnimated=false');
+      if (delta > 0)
+        $scope.drawer.style.left = '-' + (delta + Math.pow(1.5, delta/10 - 7)) + 'px';
+    },
+    end: function (coords, e) {
+      $scope.$apply('drawerAnimated=true');
+      if (startCoords.x - coords.x > 80)
+        $scope.$apply('drawerActive=false');
+      setTimeout(function () {
+        $scope.drawer.removeAttribute('style');
+      }, 200);
+    }
+  });
+  $scope.toggleDrawer = function () {
+    $scope.drawer.removeAttribute('style');
+    $scope.drawerAnimated = true;
+    $scope.drawerActive = !$scope.drawerActive;
   };
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
