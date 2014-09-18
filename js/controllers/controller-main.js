@@ -41,17 +41,8 @@ angular.module('shiverview')
       method: 'get'
     }).success(function (data) {
       if (data instanceof Array) {
-        var left = [];
-        var right = [];
         data.sort(function (a, b) {return a.index - b.index});
-        for (var i = 0; i < data.length; i++) {
-          if (data[i].position === 'right')
-            right.unshift(data[i]);
-          else
-            left.push(data[i]);
-        }
-        $scope.navList = left;
-        $scope.navListRight = right;
+        $scope.navList = data;
       }
     });
   };
@@ -64,11 +55,13 @@ angular.module('shiverview')
   $swipe.bind(angular.element($scope.drawer), {
     start: function (coords, e) {
       startCoords = coords;
-      $scope.$apply('drawerAnimated=false');
     },
     move: function (coords, e) {
-      if (coords.x < startCoords.x)
-        $scope.drawer.style.left = '-' + (startCoords.x - coords.x) + 'px';
+      var delta = startCoords.x - coords.x;
+      if (delta > 10)
+        $scope.$apply('drawerAnimated=false');
+      if (delta > 0)
+        $scope.drawer.style.left = '-' + (delta + Math.pow(1.5, delta/10 - 7)) + 'px';
     },
     end: function (coords, e) {
       $scope.$apply('drawerAnimated=true');
@@ -81,7 +74,7 @@ angular.module('shiverview')
   });
   $scope.toggleDrawer = function () {
     $scope.drawer.removeAttribute('style');
-    $scope.drawerQuick = false;
+    $scope.drawerAnimated = true;
     $scope.drawerActive = !$scope.drawerActive;
   };
   $scope.updateNav();

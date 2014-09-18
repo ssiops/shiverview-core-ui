@@ -3,22 +3,18 @@
   top: 50px;
   left: -248px;
   bottom: 0;
-  
+
   width: 240px;
-  
+
   background-color: @card-bg;
-  
+
   z-index: 101;
-  -webkit-box-shadow: 0 0px 8px rgba(0,0,0,0.2);
-     -moz-box-shadow: 0 0px 8px rgba(0,0,0,0.2);
-          box-shadow: 0 0px 8px rgba(0,0,0,0.2);
+  -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+     -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   &.animated {
     -webkit-transition: left @ease-in 0.2s;
             transition: left @ease-in 0.2s;
-  }
-  &.quick {
-    -webkit-transition: left linear 0.1s;
-            transition: left linear 0.1s;
   }
   &.active {
     left: 0px;
@@ -33,12 +29,13 @@
         padding: 8px 16px;
         color: @text-color;
         font-size: 18px;
+        border-left: 4px solid transparent;
         &.subnav-toggle {
           padding-bottom: 0;
         }
         &:hover, &:active, &:focus, &:visited {
           text-decoration: none;
-          background-color: darken(@card-bg, 10%);
+          background-color: darken(@card-bg, 5%);
         }
       }
       >.drawer-subnav {
@@ -51,19 +48,51 @@
             padding: 8px 8px 8px 32px;
             color: lighten(@text-color, 10%);
             font-size: 14px;
+            border-left: 4px solid transparent;
             &:hover, &:active, &:focus, &:visited {
               text-decoration: none;
-              background-color: darken(@card-bg, 8%);
+              background-color: darken(@card-bg, 4%);
+            }
+          }
+          &.active {
+            > a {
+              font-weight: bold;
+              border-color: @brand-primary;
             }
           }
         }
       }
       &.active {
-        background-color: darken(@card-bg, 20%);
         > a {
           font-weight: bold;
+          border-color: @brand-primary;
         }
       }
     }
+  }
+}
+.drawer-shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  opacity: 1;
+  z-index: 100;
+  -webkit-transition: opacity @ease-in 0.2s;
+          transition: opacity @ease-in 0.2s;
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+.drawer-toggle {
+  -webkit-transition: transform @ease-in-out 0.4s;
+          transition: transform @ease-in-out 0.4s;
+  &.active {
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+         -o-transform: rotate(180deg);
+            transform: rotate(180deg);
   }
 }

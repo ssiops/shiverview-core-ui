@@ -30,23 +30,24 @@
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand" href ng-click="toggleDrawer()"><span class="glyphicon glyphicon-th"></span></a>
+          <a class="navbar-brand drawer-toggle" href ng-click="toggleDrawer()" ng-class="{active: drawerActive}"><span class="glyphicon glyphicon-th"></span></a>
           <a class="navbar-brand" href="#/">Shiverview</a>
         </div>
       </div>
     </nav>
-    <nav class="drawer" id="drawer" ng-class="{active: drawerActive, animated: drawerAnimated, quick: drawerQuick}" ng-style="drawerStyle">
+    <nav class="drawer" id="drawer" ng-class="{active: drawerActive, animated: drawerAnimated}">
       <ul class="drawer-nav">
-        <li ng-repeat="item in navList">
+        <li ng-repeat="item in navList" ng-class="{active: checkActive(item.base)}">
           <a ng-if="item.href" ng-href="{{item.href}}">{{item.name}}</a>
-          <a ng-if="item.views.length === 1" ng-href="{{'#'+item.views[0]}}">{{item.name}}</a>
+          <a ng-if="item.views.length === 1" ng-href="{{'#'+item.views[0].path}}" ng-click="toggleDrawer">{{item.name}}</a>
           <a class="dropdown-toggle" href ng-if="item.views.length > 1" role="button">{{item.name}}</a>
           <ul class="drawer-subnav" ng-if="item.views.length > 1">
-            <li ng-repeat="view in item.views"><a ng-href="{{'#'+view.path}}">{{view.title}}</a></li>
+            <li ng-repeat="view in item.views" ng-class="{active: checkActive(view.path)}"><a ng-href="{{'#'+view.path}}" ng-click="toggleDrawer()">{{view.title}}</a></li>
           </ul>
         </li>
       </ul>
     </nav>
+    <div class="drawer-shade" id="drawer-shade" ng-show="drawerActive"></div>
     </div>
     <div class="view-animate-container">
       <div ng-view class="view-animate"></div>
