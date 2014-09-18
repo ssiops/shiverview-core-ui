@@ -79,6 +79,9 @@ angular.module('shiverview')
   };
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
+  $scope.$on('$routeChangeStart', function () {
+    $scope.drawerActive = false;
+  });
 }])
 .controller('toastCtrl', ['$scope', function ($scope) {
   $scope.show = false;
