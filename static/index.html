@@ -22,6 +22,12 @@
     <!-- Place anything custom after this. -->
   </head>
   <body ng-controller="bodyCtrl">
+    <div class="loading-cover" ng-hide="initDone">
+      <div class="loading-container">
+        <div class="loading-spinner"></div>
+        <h4>Initializing the awesome</h4>
+      </div>
+    </div>
     <div class="ngProgress" ng-controller="progressCtrl"></div>
     <div id="message-toast" ng-controller="toastCtrl">
       <div class="alert" ng-show="show" ng-class="style">{{message}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>

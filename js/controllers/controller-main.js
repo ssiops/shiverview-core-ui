@@ -27,7 +27,7 @@ angular.module('shiverview')
   $scope.css = [];
 }])
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
-
+  $scope.initDone = true;
 }])
 .controller('navCtrl', ['$scope', '$http', '$location', '$swipe', function ($scope, $http, $location, $swipe) {
   $scope.$loc = $location;
