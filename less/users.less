@@ -1,0 +1,36 @@
+.oauth-indicator {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  margin: 0 auto;
+
+  > .loading-spinner,
+  > .oauth-success,
+  > .oauth-failure {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 110px;
+    opacity: 1;
+    -webkit-transition: opacity @ease-in 0.2s;
+            transition: opacity @ease-in 0.2s;
+    &.ng-hide {
+      opacity: 0;
+    }
+    > .glyphicon {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .oauth-success {
+    color: @brand-success;
+  }
+
+  .oauth-failure {
+    color: @brand-warning;
+  }
+}
