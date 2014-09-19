@@ -1,5 +1,19 @@
 (function (angular) {
 angular.module('shiverview')
+.controller('aboutCtrl', ['$scope', '$http', function ($scope, $http) {
+  $http({
+    url: '/status',
+    method: 'get'
+  })
+  .success(function (data) {
+    $scope.status = data;
+    $scope.buildDate = new Date(new Date().getTime() - data.uptime * 1000);
+  });
+}]);
+})(window.angular);
+
+(function (angular) {
+angular.module('shiverview')
 .controller('indexCtrl', ['$scope', '$rootScope', function ($scope, $rootScope) {
   $scope.$rs = $rootScope;
   $scope.message = 'Hello World!';
@@ -35,11 +49,10 @@ angular.module('shiverview')
       ngProgress.set(arg);
   });
 }])
-.controller('headCtrl', ['$scope', '$http', function ($scope, $http) {
-  $scope.css = [];
-}])
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
-  $scope.initDone = true;
+  setTimeout(function () {
+    $scope.initDone = true;
+  }, 10);
 }])
 .controller('navCtrl', ['$scope', '$http', '$location', '$swipe', function ($scope, $http, $location, $swipe) {
   $scope.$loc = $location;
@@ -91,6 +104,9 @@ angular.module('shiverview')
   };
   $scope.updateNav();
   $scope.$on('userStatusUpdate', $scope.updateNav);
+  $scope.$on('$routeChangeStart', function () {
+    $scope.drawerActive = false;
+  });
 }])
 .controller('toastCtrl', ['$scope', function ($scope) {
   $scope.show = false;
