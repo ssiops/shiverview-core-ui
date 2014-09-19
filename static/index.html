@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" ng-app="shiverview"> <!--<![endif]-->
-  <head ng-controller="headCtrl">
+  <head>
     <meta charset="utf-8">
     <title>Shiverview</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,6 @@
     <meta name="author" content="">
 
     <link href="/css/main.min.css" rel="stylesheet">
-    <link ng-repeat="path in css" ng-href="/components/{{path}}" rel="stylesheet">
     <!-- Favicons -->
     <link rel="icon" href="/images/icons/favicon.png">
     <link rel="shortcut icon" href="/images/icons/favicon.png">
@@ -50,6 +49,9 @@
           <ul class="drawer-subnav" ng-if="item.views.length > 1">
             <li ng-repeat="view in item.views" ng-class="{active: checkActive(view.path)}"><a ng-href="{{'#'+view.path}}">{{view.title}}</a></li>
           </ul>
+        </li>
+        <li ng-class="{active: checkActive('/about')}">
+          <a href="/#/about">About</a>
         </li>
       </ul>
     </nav>

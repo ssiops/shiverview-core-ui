@@ -189,7 +189,7 @@ App.prototype.minify = function () {
     }
   }
   if (process.env.verbose) console.log('Minifying application scripts.');
-  var appMin = uglify.minify(['./static/js/application.js'], {
+  var appMin = uglify.minify([process.cwd() + '/static/js/application.js'], {
     outSourceMap: 'application.min.js.map'
   });
   var patt = /"sources".+"names"/;

@@ -11,5 +11,15 @@ module.exports = [
         res.send(srv.cache.get('users'));
       }
     }
+  },
+  {
+    url: '/status',
+    method: 'get',
+    handler: function (req, res, srv) {
+      res.send({
+        version: srv.manager.pkg.version,
+        uptime: process.uptime()
+      })
+    }
   }
 ]

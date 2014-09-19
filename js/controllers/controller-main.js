@@ -23,11 +23,10 @@ angular.module('shiverview')
       ngProgress.set(arg);
   });
 }])
-.controller('headCtrl', ['$scope', '$http', function ($scope, $http) {
-  $scope.css = [];
-}])
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
-  $scope.initDone = true;
+  setTimeout(function () {
+    $scope.initDone = true;
+  }, 10);
 }])
 .controller('navCtrl', ['$scope', '$http', '$location', '$swipe', function ($scope, $http, $location, $swipe) {
   $scope.$loc = $location;
