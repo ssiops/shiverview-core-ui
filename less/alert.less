@@ -5,11 +5,20 @@
   right: 0;
   text-align: center;
   z-index: 1001;
-  & > .alert {
-    display: inline-block;
-    & > .toast-dismiss
-    {
-      font-weight: bold;
+
+  .toast-container {
+    opacity: 1;
+    -webkit-transition: opacity @ease-in 0.1s;
+            transition: opacity @ease-in 0.1s;
+    &.ng-hide {
+      opacity: 0;
+    }
+    > .alert {
+      display: inline-block;
+      & > .toast-dismiss
+      {
+        font-weight: bold;
+      }
     }
   }
 }

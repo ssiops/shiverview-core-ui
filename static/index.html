@@ -29,7 +29,9 @@
     </div>
     <div class="ngProgress" ng-controller="progressCtrl"></div>
     <div id="message-toast" ng-controller="toastCtrl">
-      <div class="alert" ng-show="show" ng-class="style">{{message}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>
+      <div class="toast-container" ng-show="show">
+        <div class="alert" ng-class="style">{{message}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>
+      </div>
     </div>
     <div ng-controller="navCtrl">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">

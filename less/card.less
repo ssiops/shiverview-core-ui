@@ -4,9 +4,7 @@
   margin-bottom: @space-default;
   background-color: @card-bg;
   border: 1px solid @card-border-color;
-  -webkit-box-shadow: @card-shadow;
-  -moz-box-shadow: @card-shadow;
-  box-shadow: @card-shadow;
+  .shadow-z-1;
   & > img.cover {
     width: 100%;
     margin-bottom: @space-small;
@@ -22,9 +20,6 @@
     padding: 0.5em 1em;
     background-color: darken(@card-bg, 5%);
     border-bottom: 1px solid @card-border-color;
-    -webkit-box-shadow: @card-shadow;
-    -moz-box-shadow: @card-shadow;
-    box-shadow: @card-shadow;
     &.cover-primary {
       color: #fff;
       background-color: darken(@brand-primary, 5%);
