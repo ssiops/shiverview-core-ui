@@ -46,6 +46,7 @@ angular.module('shiverview')
     });
   };
   $scope.checkActive = function (input) {
+    if (typeof input === 'undefined') return false;
     return $location.path().search(input) === 0;
   };
   $scope.drawerAnimated = true;
