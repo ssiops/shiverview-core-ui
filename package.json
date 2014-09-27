@@ -1,6 +1,6 @@
 {
   "name": "shiverview-core-ui",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Basic ui framework for project Shiverview",
   "main": "index.js",
   "scripts": {
