@@ -77,8 +77,12 @@ App.prototype.installBowerDep = function () {
   }
   if (bowerDepsList.length > 0) {
     if (process.env.verbose) console.log('Installing bower dependencies.');
-    bower.commands.install(bowerDepsList, {save: false}).on('end', function (installed) {
-      if (process.env.verbose && bowerDepsList.length > 0) console.log('Bower packages installed:\n', installed);
+    bower.commands.install(bowerDepsList, {save: false, forceLatest: true}).on('end', function (installed) {
+      if (process.env.verbose) {
+        console.log('Bower packages installed.');
+        for (var pkg in installed)
+          console.log('Installed', installed[pkg].pkgMeta.name, installed[pkg].pkgMeta.version);
+      }
       return d.resolve();
     });
   } else {
