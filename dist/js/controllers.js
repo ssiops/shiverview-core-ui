@@ -26,27 +26,28 @@ angular.module('shiverview')
 
 (function (angular) {
 angular.module('shiverview')
-.controller('progressCtrl', ['$scope', 'ngProgress', function ($scope, ngProgress) {
-  ngProgress.color('#0091bf');
+.controller('progressCtrl', ['$scope', 'ngProgressFactory', function ($scope, ngProgressFactory) {
+  $scope.bar = ngProgressFactory.createInstance();
+  $scope.bar.setColor('#0091bf');
   $scope.$on('$routeChangeStart', function (e) {
-    ngProgress.reset();
-    ngProgress.start();
+    $scope.bar.reset();
+    $scope.bar.start();
   });
   $scope.$on('$routeChangeSuccess', function (e) {
-    ngProgress.complete();
+    $scope.bar.complete();
   });
   $scope.$on('$routeChangeError', function (e) {
-    ngProgress.reset();
+    $scope.bar.reset();
   });
   $scope.$on('setProgress', function (e, arg) {
     if (arg === 0)
-      ngProgress.start();
+      $scope.bar.start();
     else if (arg >= 100)
-      ngProgress.complete();
+      $scope.bar.complete();
     else if (arg < 0)
-      ngProgress.reset();
+      $scope.bar.reset();
     else
-      ngProgress.set(arg);
+      $scope.bar.set(arg);
   });
 }])
 .controller('bodyCtrl', ['$scope', '$http', function ($scope, $http) {
@@ -72,6 +73,7 @@ angular.module('shiverview')
     });
   };
   $scope.checkActive = function (input) {
+    if (typeof input === 'undefined') return false;
     return $location.path().search(input) === 0;
   };
   $scope.drawerAnimated = true;
