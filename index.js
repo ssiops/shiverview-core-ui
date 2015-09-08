@@ -1,4 +1,5 @@
 var async = require('async');
+var bower = require('bower');
 var cluster = require('cluster');
 var exec = require('child_process').exec;
 var fs = require('fs');
@@ -74,17 +75,16 @@ App.prototype.installBowerDep = function () {
     else
       bowerDepsList.push(name + '#' + bowerDeps[name]);
   }
-  if (process.env.verbose) console.log('Installing bower dependencies.');
-  var bower = exec(['bower', 'install', '--quiet', '--allow-root'].concat(bowerDepsList).join(' '));
-  bower.on('close', function (code) {
-    if (code !== 0) {
-      var e = new Error('Failed to install bower dependencies.');
-      e.data = bowerDepsList;
-      return d.reject(e);
-    }
-    if (process.env.verbose && bowerDepsList.length > 0) console.log('Bower packages installed:\n' + bowerDepsList.join(' '));
-    return d.resolve();
-  });
+  if (bowerDepsList.length > 0) {
+    if (process.env.verbose) console.log('Installing bower dependencies.');
+    bower.commands.install(bowerDepsList, {save: false}).on('end', function (installed) {
+      if (process.env.verbose && bowerDepsList.length > 0) console.log('Bower packages installed:\n', installed);
+      return d.resolve();
+    });
+  } else {
+    if (process.env.verbose) console.log('No bower dependency is required.');
+    d.resolve();
+  }
   return d.promise;
 };
 
