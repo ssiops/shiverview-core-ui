@@ -5,19 +5,10 @@
   background-color: @card-bg;
   border: 1px solid @card-border-color;
   .shadow-z-1;
-  & > img.cover {
-    width: 100%;
-    margin-bottom: @space-small;
-  }
-  & > h1.cover,
-  & > h2.cover,
-  & > h3.cover,
-  & > h4.cover,
-  & > h5.cover,
-  & > h6.cover {
+  & > .cover {
+    position: relative;
     width: 100%;
     margin: 0;
-    padding: 0.5em 1em;
     background-color: darken(@card-bg, 5%);
     border-bottom: 1px solid @card-border-color;
     &.cover-primary {
@@ -39,6 +30,24 @@
     &.cover-danger {
       color: #fff;
       background-color: darken(@brand-danger, 5%);
+    }
+    & > .caption {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      margin: 0;
+      padding: @space-default;
+      &.compact {
+        padding: @space-small;
+      }
+
+      color: #fff;
+      background-color: rgba(0, 0, 0, .25);
+
+      & > a {
+        color: #fff;
+      }
     }
   }
 }
