@@ -7,6 +7,7 @@ var q = require('q');
 var util = require('util');
 var uglify = require('uglify-js');
 var wiredep = require('wiredep');
+var less = require('less');
 
 var Cache = require('./lib/cache.js');
 
@@ -42,16 +43,29 @@ App.prototype.finally = function (callback) {
   .then(function () {
     self.injectDep();
     return self.injectNgMod();
+  }, function (err) {
+    return callback(err)
   })
   .then(function () {
     return self.injectRoutes();
+  }, function (err) {
+    return callback(err)
   })
   .then(function () {
     return self.minify();
+  }, function (err) {
+    return callback(err)
+  })
+  .then(function () {
+    return self.compileCss();
+  }, function (err) {
+    return callback(err)
   })
   .then(function () {
     return callback();
-  })
+  }, function (err) {
+    return callback(err)
+  });
 };
 
 App.prototype.installBowerDep = function () {
@@ -238,5 +252,40 @@ App.prototype.minify = function () {
   });
   return d.promise;
 };
+
+App.prototype.compileCss = function () {
+  var self = this;
+  var d = q.defer();
+  var files = [];
+  if (process.env.verbose) console.log('Building list of application stylesheets.');
+  for (var app in self.srv.manager.apps) {
+    if (self.srv.manager.apps[app].ui && self.srv.manager.apps[app].ui.less) {
+      var basepath = process.cwd() + '/static' + self.srv.manager.apps[app].path + '/';
+      if (typeof self.srv.manager.apps[app].ui.less === 'string')
+        files.push(basepath + self.srv.manager.apps[app].ui.less);
+      else if (self.srv.manager.apps[app].ui.less instanceof Array)
+      for (var i = 0; i < self.srv.manager.apps[app].ui.less.length; i++) {
+        files.push(basepath + self.srv.manager.apps[app].ui.less[i]);
+      }
+    }
+  }
+  if (files.length > 0) {
+    var src = '';
+    for (var j = 0; j < files.length; j++)
+      src += fs.readFileSync(files[j]);
+    less.render(src, {compress: true})
+    .then(function (output) {
+      fs.appendFileSync(process.cwd() + '/static/css/main.min.css', output.css);
+      if (process.env.verbose) console.log('Application stylesheets compiled.');
+      d.resolve();
+    }, function (err) {
+      d.reject(err);
+    });
+  } else {
+    if (process.env.verbose) console.log('No application stylesheet found.');
+    d.resolve();
+  }
+  return d.promise;
+}
 
 module.exports = app;
