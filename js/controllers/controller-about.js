@@ -5,9 +5,9 @@ angular.module('shiverview')
     url: '/status',
     method: 'get'
   })
-  .success(function (data) {
-    $scope.status = data;
-    $scope.buildDate = new Date(new Date().getTime() - data.uptime * 1000);
+  .then(function (res) {
+    $scope.status = res.data;
+    $scope.buildDate = new Date(new Date().getTime() - res.data.uptime * 1000);
   });
 }]);
 })(window.angular);

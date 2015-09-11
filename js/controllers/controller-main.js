@@ -39,10 +39,10 @@ angular.module('shiverview')
     $http({
       url: '/routes',
       method: 'get'
-    }).success(function (data) {
-      if (data instanceof Array) {
-        data.sort(function (a, b) {return a.index - b.index});
-        $scope.navList = data;
+    }).then(function (res) {
+      if (res.data instanceof Array) {
+        res.data.sort(function (a, b) {return a.index - b.index});
+        $scope.navList = res.data;
       }
     });
   };
