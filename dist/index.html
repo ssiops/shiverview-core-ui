@@ -30,7 +30,7 @@
     <div class="ngProgress" ng-controller="progressCtrl"></div>
     <div id="message-toast" ng-controller="toastCtrl">
       <div class="toast-container" ng-show="show">
-        <div class="alert" ng-class="style">{{message}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>
+        <div class="alert" ng-class="style">{{message || 'Oops, something happened.'}} <a class="toast-dismiss alert-link" href ng-click="dismiss()">Dismiss</a></div>
       </div>
     </div>
     <div ng-controller="navCtrl">
